@@ -2,10 +2,19 @@
 
 A hybrid application that runs as both a **Web Application** (React + Chart.js) and a **Desktop Application** (PyQt5 + Matplotlib). Both frontends connect to a common **Django REST** backend for CSV upload, analytics, and PDF reports.
 
+## Login credentials (default)
+
+| Field     | Value      |
+|----------|------------|
+| **Username** | `admin`  |
+| **Password** | `admin123` |
+
+Use these to sign in on the Web app (http://localhost:3000) and the Desktop app. Create this user by running `python manage.py createsuperuser` and entering the same values (or set your own).
+
 ## Tech Stack
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
+| Layer   | Technology | Purpose |
+|---------|------------|---------|
 | Frontend (Web) | React.js + Chart.js | Table + charts |
 | Frontend (Desktop) | PyQt5 + Matplotlib | Same visualization on desktop |
 | Backend | Django + Django REST Framework | Common API |
@@ -15,10 +24,10 @@ A hybrid application that runs as both a **Web Application** (React + Chart.js) 
 
 ## Features
 
-- **CSV Upload** – Upload CSV files from both Web and Desktop to the backend
+- **CSV Upload** – Upload CSV from Web and Desktop to the backend
 - **Data Summary API** – Total count, averages (Flowrate, Pressure, Temperature), equipment type distribution
 - **Visualization** – Charts via Chart.js (Web) and Matplotlib (Desktop)
-- **History** – Last 5 uploaded datasets with summary stored in SQLite
+- **History** – Last 5 uploaded datasets with summary in SQLite
 - **PDF Report** – Generate and download summary PDF
 - **Basic Authentication** – Sign in required for all API access
 
@@ -26,18 +35,9 @@ A hybrid application that runs as both a **Web Application** (React + Chart.js) 
 
 ```
 Fossee/
-├── backend/                 # Django API
-│   ├── equipment_visualizer/
-│   ├── api/
-│   └── requirements.txt
-├── frontend/                # React web app
-│   ├── public/
-│   ├── src/
-│   └── package.json
-├── desktop/                 # PyQt5 desktop app
-│   ├── main.py
-│   ├── api_client.py
-│   └── requirements.txt
+├── backend/           # Django API
+├── frontend/          # React web app
+├── desktop/           # PyQt5 desktop app
 ├── sample_equipment_data.csv
 └── README.md
 ```
@@ -48,7 +48,7 @@ Fossee/
 - **Node.js 18+** (for React)
 - **pip** and **npm**
 
-## Setup Instructions
+## Setup
 
 ### 1. Backend (Django)
 
@@ -63,7 +63,7 @@ venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
-# Enter username and password (e.g. admin / admin123)
+# Use username: admin, password: admin123 (or your choice)
 python manage.py runserver
 ```
 
@@ -77,71 +77,31 @@ npm install
 npm start
 ```
 
-Web app runs at **http://localhost:3000**. Use the same username/password from `createsuperuser` to sign in.
+Web app runs at **http://localhost:3000**. Sign in with **admin** / **admin123** (or the user you created).
 
 ### 3. Desktop Frontend (PyQt5)
 
 ```bash
 cd desktop
 python -m venv venv
-# Windows:
-venv\Scripts\activate
-# Linux/macOS:
-# source venv/bin/activate
-
+venv\Scripts\activate   # Windows
 pip install -r requirements.txt
 python main.py
 ```
 
-Sign in with the same Django user. Use **Upload CSV** to pick a file (e.g. the provided `sample_equipment_data.csv` in the repo root).
+Sign in with the same username and password. Use **Upload CSV** to select `sample_equipment_data.csv` from the project root.
 
 ## CSV Format
 
-CSV must include these columns (names exact):
+Required columns: **Equipment Name**, **Type**, **Flowrate**, **Pressure**, **Temperature**.
 
-- **Equipment Name**
-- **Type**
-- **Flowrate**
-- **Pressure**
-- **Temperature**
+Sample file: `sample_equipment_data.csv` in the project root.
 
-A sample file is provided: `sample_equipment_data.csv` at the project root. Use it for demo and testing.
-
-## API Endpoints (all require Basic Auth)
+## API Endpoints (Basic Auth required)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/upload/` | Upload CSV; returns summary + records |
-| GET | `/api/history/` | Last 5 datasets (id, name, row_count, summary_json) |
-| GET | `/api/summary/<id>/` | Full summary for a dataset |
+| GET | `/api/history/` | Last 5 datasets |
+| GET | `/api/summary/<id>/` | Summary for a dataset |
 | GET | `/api/report/<id>/pdf/` | Download PDF report |
-
-## Demo & Testing
-
-1. Start backend: `cd backend && python manage.py runserver`
-2. Create user: `python manage.py createsuperuser` (if not done)
-3. **Web:** `cd frontend && npm start` → open http://localhost:3000 → sign in → Upload CSV (e.g. `sample_equipment_data.csv`)
-4. **Desktop:** `cd desktop && python main.py` → sign in → Upload CSV → view charts and table → Generate PDF Report
-
-## Git & GitHub
-
-The repo is initialized with an initial commit. To push to GitHub:
-
-1. Create a new repository on [GitHub](https://github.com/new) (no README).
-2. Run:
-   ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
-   git push -u origin main
-   ```
-   Or use [GitHub CLI](https://cli.github.com/): `gh repo create REPO_NAME --public --source=. --push`
-
-## Submission
-
-- Source code on GitHub (backend + both frontends)
-- README with setup instructions (this file)
-- Short demo video (2–3 minutes) – record upload, charts, history, and PDF from both Web and Desktop
-- Optional: deployment link for web version (e.g. Vercel/Netlify with backend on Railway/Render)
-
-## License
-
-MIT (or as required by your organization.)
