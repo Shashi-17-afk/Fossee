@@ -123,6 +123,18 @@ A sample file is provided: `sample_equipment_data.csv` at the project root. Use 
 3. **Web:** `cd frontend && npm start` → open http://localhost:3000 → sign in → Upload CSV (e.g. `sample_equipment_data.csv`)
 4. **Desktop:** `cd desktop && python main.py` → sign in → Upload CSV → view charts and table → Generate PDF Report
 
+## Git & GitHub
+
+The repo is initialized with an initial commit. To push to GitHub:
+
+1. Create a new repository on [GitHub](https://github.com/new) (no README).
+2. Run:
+   ```bash
+   git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
+   git push -u origin main
+   ```
+   Or use [GitHub CLI](https://cli.github.com/): `gh repo create REPO_NAME --public --source=. --push`
+
 ## Submission
 
 - Source code on GitHub (backend + both frontends)

@@ -1,0 +1,1 @@
+web: gunicorn equipment_visualizer.wsgi:application
